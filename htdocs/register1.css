@@ -1,0 +1,26 @@
+body{
+    text-align: center; 
+    padding-top: 10%;
+    background-color:lightslategray;
+
+}
+.container{
+    font-size: 125%;
+    font-family: 'Times New Roman', Times, serif;
+    margin: auto; 
+    display: inline-block;
+    padding-top: 1%;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-bottom: 1%;
+    text-align: left;    
+    border: solid 3px;
+    background-color: lightskyblue;
+}
+h1{
+    text-align: center;   
+}
+.klasap{
+    text-align: center;  
+
+}
