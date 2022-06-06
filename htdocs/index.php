@@ -1,21 +1,74 @@
-<?php include('./parts/header.php')?>
-<?php include ('./getUsers.php')?>
+<?php
+include('header.php');
+require_once('connection.php');
+?>
+<html>
+  <head>
+    <style>
+      body { background-image: url("https://cdn.theatlantic.com/media/mt/science/cat_caviar.jpg");};
+    </style>
+</head>
+<body>
+</body>
+<main class="container">
+  <h1 class="m-4 text-uppercase" style="text-align: center; font-family: comic-sans;">Articles</h1>
 
-<ul class="list-group">
-    <li class="list-group-item">
-            <span class="test-danger"> <strong> ID. USERNAME </strong></span>
-    </li>
-    <?php foreach ($users as $user) : ?>
-        <li class="list-group-item">
-            <img src="/images/<?php echo $user["avatar"] ?>" alt = "<?php echo $user["username"] ?>" >
-            <a href="#" class="text-danger"> <?php echo $user["id"] ." ." . $user["username"]?></a>
-    </li>
-    <?php endforeach; ?>
+  <?php
+  $page = isset($_GET["page"]) ? $_GET["page"] : "";
+  if ($page < 1) {
+    $page = 1;
+  }
+
+  for ($i = 0; $i < $page; $i++) {
+    $x = 0 + 12 * $i;
+    $y = 11 + 12 * $i;
+  }
+
+  $last = $conn->query("SELECT MAX(Id) AS newest FROM articles");
+  while ($newest = $last->fetch_assoc()) {
+    $s = $newest["newest"] - $x;
+    $i = $newest["newest"] - $y;
+    $query1 = $conn->query("SELECT * FROM articles WHERE Id BETWEEN '$i' AND '$s' ORDER BY Create_time DESC");
+  }
+  ?>
+
+  <div class="container">
+    <div class="row align-items-center">
+      <?php
+      while ($row1 = $query1->fetch_assoc()) {
+      ?>
+      
+        <div class="col-md-4 col-sm-5 col-xs-7" style="text-align: center">
+
+          <img src="/images/<?php echo $row1["Cover_image"] ?>" alt="<?php echo $row1["Title"] ?>" style="width: 200px">
+
+          <p><span style="font-size: 20px; font-weight: bold;">Title:</span> <?php echo $row1["Title"] ?>
+          <p><span style="font-size: 20px; font-weight: bold;">Autor:</span> <?php echo $row1["Autor"] ?>
+          <p><?php echo $row1["Text"] ?>
+        </div>
+      
+      <?php
+      }
+      ?>
+    </div>
+  </div>
+
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination" style="padding-left:43.125%; padding-top:5%;">
+      <li class="page-item">
+        <a class="page-link" href="index.php<?php echo "?page=" . $page - 1; ?>" aria-label="Previous Page">
+          <span aria-hidden="true">&laquo;</span>
+          <span class="sr-only">Previous</span>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="index.php<?php echo "?page=" . $page + 1; ?>" aria-label="Next Page">
+          <span aria-hidden="true">&raquo;</span>
+          <span class="sr-only">Next</span>
+        </a>
+      </li>
     </ul>
-
-    <main class="container">
-
-    </main>
-
-<?php include('./parts/footer.php')?>
-
+  </nav>
+</main>
+    </html>
